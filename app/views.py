@@ -1,10 +1,18 @@
 from django.shortcuts import render
+from .models import Category, Photo
 
 def gallery(request):
-    return render(request, 'app/gallery.html')
+    categories = Category.objects.all()
+    photos = Photo.objects.all()
+    context = {'categories':categories, 'photos':photos}
+    return render(request, 'app/gallery.html', context)
 
 def viewPhoto(request, pk):
-    return render(request, 'app/photo.html')
+    photo = Photo.objects.get(id=pk)
+    context = {'photo':photo}
+    return render(request, 'app/photo.html', context)
 
 def addPhoto(request):
-    return render(request, 'app/add.html')
+    categories = Category.objects.all()
+    context = {'categories':categories,}
+    return render(request, 'app/add.html', context)
