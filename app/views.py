@@ -3,18 +3,19 @@ from django.shortcuts import render, redirect
 from .models import Category, Photo
 
 def gallery(request):
-    # category = request.GET('category')
+    category = request.GET.get('category')
+    if category == None:
+        photos = Photo.objects.all()
+    else:
+        photos = Photo.objects.filter(category__name=category)
 
-    # print('category:',category)
     categories = Category.objects.all()
-    photos = Photo.objects.all()
-    context = {'categories':categories, 'photos':photos}
+    context = {'categories': categories, 'photos': photos}
     return render(request, 'app/gallery.html', context)
 
 def viewPhoto(request, pk):
     photo = Photo.objects.get(id=pk)
-    context = {'photo':photo}
-    return render(request, 'app/photo.html', context)
+    return render(request, 'app/photo.html', {'photo': photo})
 
 def addPhoto(request):
     if request.method == 'POST':
